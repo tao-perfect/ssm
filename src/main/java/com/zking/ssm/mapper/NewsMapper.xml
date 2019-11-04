@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zking.ssm.mapper.NewsMapper" >
+  <resultMap id="BaseResultMap" type="com.zking.ssm.model.News" >
+    <id property="newsId" javaType="integer" column="news_id"/>
+    <result property="title" javaType="string" column="title"/>
+    <collection property="categoryList" ofType="com.zking.ssm.model.Category">
+      <id property="categoryId" javaType="integer" column="category_id"/>
+      <result property="categoryName" javaType="string" column="category_name"/>
+    </collection>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    news_id, title
+  </sql>
+  <delete id="deletenewsCategory" parameterType="com.zking.ssm.model.News">
+    DELETE FROM t_news_category WHERE nid=#{newsId}
+  </delete>
+
+  <select id="queryNewsManyToMany" resultMap="BaseResultMap">
+    SELECT * FROM t_news n,t_category c,t_news_category nc WHERE n.`news_id`=nc.`nid` AND c.`category_id`=nc.`cid`
+  </select>
+</mapper>
